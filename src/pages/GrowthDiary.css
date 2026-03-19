@@ -43,3 +43,39 @@
 @media (max-width: 768px) {
   .diary-layout { grid-template-columns: 1fr; }
 }
+
+/* File upload */
+.file-input {
+  display: block;
+  width: 100%;
+  padding: 8px;
+  border: 1px dashed var(--gray-300);
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  color: var(--gray-600);
+  cursor: pointer;
+  background: var(--gray-50);
+}
+.file-input:hover { border-color: var(--green-400); background: var(--green-50); }
+
+.photo-preview-wrap {
+  position: relative;
+  margin-top: 10px;
+  display: inline-block;
+  width: 100%;
+}
+.photo-preview {
+  width: 100%;
+  max-height: 180px;
+  object-fit: cover;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--gray-200);
+}
+.preview-remove {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  padding: 2px 8px;
+  font-size: 12px;
+  line-height: 1.4;
+}

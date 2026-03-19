@@ -1,7 +1,9 @@
 import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
+import { motion } from 'framer-motion'
 import { login as loginApi } from '../services/api'
 import { useAuth } from '../context/AuthContext'
+import MotionButton from '../components/animations/MotionButton'
 import './Auth.css'
 
 export default function Login() {
@@ -28,12 +30,27 @@ export default function Login() {
 
   return (
     <div className="auth-page">
-      <div className="auth-card card">
-        <div className="auth-logo">🌿 FloraLink</div>
+      <motion.div
+        className="auth-card card"
+        initial={{ opacity: 0, y: 32, scale: 0.97 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        transition={{ duration: 0.45, ease: 'easeOut' }}
+      >
+        <motion.div
+          className="auth-logo"
+          animate={{ rotate: [0, 8, -8, 0] }}
+          transition={{ duration: 3, repeat: Infinity, repeatDelay: 5 }}
+        >🌿 FloraLink</motion.div>
         <h1 className="auth-title">Welcome back</h1>
         <p className="auth-subtitle">Sign in to monitor your plants</p>
 
-        {error && <div className="auth-error">{error}</div>}
+        {error && (
+          <motion.div
+            className="auth-error"
+            initial={{ opacity: 0, x: -10 }}
+            animate={{ opacity: 1, x: 0 }}
+          >{error}</motion.div>
+        )}
 
         <form onSubmit={handleSubmit}>
           <div className="form-group">
@@ -44,13 +61,13 @@ export default function Login() {
             <label htmlFor="password">Password</label>
             <input id="password" type="password" value={form.password} onChange={e => setForm({ ...form, password: e.target.value })} required placeholder="••••••••" />
           </div>
-          <button type="submit" className="btn btn-primary auth-submit" disabled={loading}>
+          <MotionButton type="submit" className="btn btn-primary auth-submit" disabled={loading}>
             {loading ? 'Signing in…' : 'Sign in'}
-          </button>
+          </MotionButton>
         </form>
 
         <p className="auth-link">Don't have an account? <Link to="/register">Register</Link></p>
-      </div>
+      </motion.div>
     </div>
   )
 }

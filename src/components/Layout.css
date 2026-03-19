@@ -98,3 +98,16 @@
   .sidebar { width: 100%; height: auto; position: relative; flex-direction: row; flex-wrap: wrap; }
   .main-content { margin-left: 0; }
 }
+
+/* Animated active nav indicator */
+.nav-active-bar {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 20px;
+  background: var(--green-500);
+  border-radius: 2px;
+}
+.nav-item { position: relative; }

@@ -1,6 +1,9 @@
 import { useEffect, useState } from 'react'
 import { getPlants, getReadings } from '../services/api'
 import SensorChart from '../components/SensorChart'
+import PageTransition from '../components/animations/PageTransition'
+import FadeInView from '../components/animations/FadeInView'
+import CountUp from '../components/animations/CountUp'
 import './Analytics.css'
 
 export default function Analytics() {
@@ -26,9 +29,12 @@ export default function Analytics() {
   if (loading) return <div className="loading">Loading analytics…</div>
 
   const plant = plants.find(p => p.id === selected)
+  const avgMoisture = readings.length ? readings.reduce((s, r) => s + r.soilMoisture, 0) / readings.length : 0
+  const avgTemp = readings.length ? readings.reduce((s, r) => s + r.temperature, 0) / readings.length : 0
+  const avgHealth = readings.length ? readings.reduce((s, r) => s + r.healthScore, 0) / readings.length : 0
 
   return (
-    <div>
+    <PageTransition>
       <div className="page-header">
         <h1 className="page-title">Analytics</h1>
         <select className="plant-selector" value={selected ?? ''} onChange={e => setSelected(parseInt(e.target.value))}>
@@ -38,41 +44,40 @@ export default function Analytics() {
 
       {plant && (
         <div className="analytics-summary grid-4">
-          <div className="card summary-card">
-            <div className="summary-label">Total Readings</div>
-            <div className="summary-value">{readings.length}</div>
-          </div>
-          <div className="card summary-card">
-            <div className="summary-label">Avg Moisture</div>
-            <div className="summary-value">
-              {readings.length ? (readings.reduce((s, r) => s + r.soilMoisture, 0) / readings.length).toFixed(1) + '%' : '—'}
-            </div>
-          </div>
-          <div className="card summary-card">
-            <div className="summary-label">Avg Temperature</div>
-            <div className="summary-value">
-              {readings.length ? (readings.reduce((s, r) => s + r.temperature, 0) / readings.length).toFixed(1) + '°C' : '—'}
-            </div>
-          </div>
-          <div className="card summary-card">
-            <div className="summary-label">Avg Health Score</div>
-            <div className="summary-value">
-              {readings.length ? Math.round(readings.reduce((s, r) => s + r.healthScore, 0) / readings.length) : '—'}
-            </div>
-          </div>
+          {[
+            { label: 'Total Readings', value: readings.length, suffix: '' },
+            { label: 'Avg Moisture', value: parseFloat(avgMoisture.toFixed(1)), suffix: '%' },
+            { label: 'Avg Temperature', value: parseFloat(avgTemp.toFixed(1)), suffix: '°C' },
+            { label: 'Avg Health Score', value: Math.round(avgHealth), suffix: '' },
+          ].map((stat, i) => (
+            <FadeInView key={stat.label} delay={i * 0.08}>
+              <div className="card summary-card">
+                <div className="summary-label">{stat.label}</div>
+                <div className="summary-value">
+                  {readings.length
+                    ? <><CountUp value={stat.value} decimals={stat.suffix === '%' || stat.suffix === '°C' ? 1 : 0} />{stat.suffix}</>
+                    : '—'}
+                </div>
+              </div>
+            </FadeInView>
+          ))}
         </div>
       )}
 
       <div className="analytics-charts">
-        <div className="card chart-card">
-          <h3 className="chart-title">💧 Soil Moisture Over Time</h3>
-          {readings.length > 0 ? <SensorChart readings={readings} type="moisture" /> : <p className="no-data">No data available</p>}
-        </div>
-        <div className="card chart-card">
-          <h3 className="chart-title">🌡️ Temperature Over Time</h3>
-          {readings.length > 0 ? <SensorChart readings={readings} type="temperature" /> : <p className="no-data">No data available</p>}
-        </div>
+        <FadeInView delay={0.1}>
+          <div className="card chart-card">
+            <h3 className="chart-title">💧 Soil Moisture Over Time</h3>
+            {readings.length > 0 ? <SensorChart readings={readings} type="moisture" /> : <p className="no-data">No data available</p>}
+          </div>
+        </FadeInView>
+        <FadeInView delay={0.2}>
+          <div className="card chart-card">
+            <h3 className="chart-title">🌡️ Temperature Over Time</h3>
+            {readings.length > 0 ? <SensorChart readings={readings} type="temperature" /> : <p className="no-data">No data available</p>}
+          </div>
+        </FadeInView>
       </div>
-    </div>
+    </PageTransition>
   )
 }
