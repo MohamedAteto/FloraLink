@@ -67,6 +67,9 @@ export default function Login() {
         </form>
 
         <p className="auth-link">Don't have an account? <Link to="/register">Register</Link></p>
+        <p style={{ textAlign: 'center', fontSize: 12, color: 'var(--gray-500)', marginTop: 8 }}>
+          Demo: demo@floralink.io / demo1234
+        </p>
       </motion.div>
     </div>
   )

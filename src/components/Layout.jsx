@@ -24,14 +24,17 @@ export default function Layout() {
             animate={{ rotate: [0, 10, -10, 0] }}
             transition={{ duration: 3, repeat: Infinity, repeatDelay: 4 }}
           >🌿</motion.span>
-          <span className="logo-text">FloraLink</span>
+          <span className="logo-text">
+            <span style={{ color: '#4ade80' }}>Flora</span>
+            <span style={{ background: 'linear-gradient(135deg,#fb923c,#fbbf24)', WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent' }}>Link</span>
+          </span>
         </div>
 
         <nav className="sidebar-nav">
           {[
             { to: '/', icon: '🏠', label: 'Dashboard', end: true },
             { to: '/analytics', icon: '📊', label: 'Analytics' },
-            { to: '/plants/add', icon: '➕', label: 'Add Plant' },
+            { to: '/settings', icon: '⚙️', label: 'Settings' },
           ].map(({ to, icon, label, end }) => (
             <NavLink key={to} to={to} end={end}
               className={({ isActive }) => isActive ? 'nav-item active' : 'nav-item'}

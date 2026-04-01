@@ -22,6 +22,7 @@ export const deletePlant = (id) => api.delete(`/plants/${id}`)
 
 // Plant types
 export const getPlantTypes = () => api.get('/plant-types')
+export const lookupPlantType = (name) => api.get(`/plant-types/lookup?name=${encodeURIComponent(name)}`)
 
 // Sensor readings
 export const getReadings = (plantId, limit = 50) =>

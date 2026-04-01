@@ -9,6 +9,7 @@ import PlantDetails from './pages/PlantDetails'
 import AddPlant from './pages/AddPlant'
 import Analytics from './pages/Analytics'
 import GrowthDiary from './pages/GrowthDiary'
+import Settings from './pages/Settings'
 
 function PrivateRoute({ children }) {
   const { token } = useAuth()
@@ -28,6 +29,7 @@ function AnimatedRoutes() {
           <Route path="plants/:id" element={<PlantDetails />} />
           <Route path="analytics" element={<Analytics />} />
           <Route path="diary/:plantId" element={<GrowthDiary />} />
+          <Route path="settings" element={<Settings />} />
         </Route>
       </Routes>
     </AnimatePresence>
